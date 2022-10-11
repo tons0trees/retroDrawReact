@@ -28,9 +28,10 @@ const Palette = (props) => {
      */
     return (
         <div className="palette">
-            {COLORS.map((element) => {
+            {COLORS.map((element, index) => {
                 return (
                     <Cell
+                        key={`palette-${index}`}
                         color={element}
                         isActive={element === activeColor}
                         handleClick={() => {

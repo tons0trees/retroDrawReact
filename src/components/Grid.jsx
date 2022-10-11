@@ -29,6 +29,7 @@ const Grid = (props) => {
   return (<div className="grid">
     {cellList.map((element,index) => {
       return (<Cell 
+        key={`grid-${index}`}
         color={element.color}
         handleClick={() => {
           const copyCellList = [...cellList];
