@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Header, Palette, Grid, ActionPanel } from "./";
 
 /**
@@ -19,18 +19,40 @@ const Main = () => {
    * - activeColor, setActiveColor initialized to COLORS[0]
    * - cellList, setCellList initialized to buildCellList()
    */
+  const getCellListFromLocal = () => {
+    let cellList = JSON.parse(localStorage.getItem('cellList'));
+    if (cellList) {
+      return cellList;
+    }
+    return buildCellList();
+  }
+
+  const setCellListOnLocal = (cellList) => {
+    localStorage.setItem('cellList', JSON.stringify(cellList));
+  }
+
+  const setCellList = (newCellList) => {
+    setCellListOnLocal(newCellList);
+    _setCellList(newCellList);
+  }
+
+  const [activeColor, setActiveColor] = useState(COLORS[0]);
+  const [cellList, _setCellList] = useState([]);
+
+  useEffect(() => {
+    _setCellList(getCellListFromLocal());
+  },[])
 
   return (
     <div className="app">
-      <h1>i am main</h1>
       {/* Header needs no props */}
       <Header />
       {/* Palette needs to be passed activeColor and setActiveColor */}
-      <Palette />
+      <Palette activeColor={activeColor} setActiveColor={setActiveColor} />
       {/* Grid needs to be passed activeColor, cellList, and setCellList */}
-      <Grid />
+      <Grid activeColor={activeColor} cellList={cellList} setCellList={setCellList}/>
       {/* ActionPanel needs to be passed activeColor, cellList, and setCellList */}
-      <ActionPanel />
+      <ActionPanel activeColor={activeColor} cellList={cellList} setCellList={setCellList}/>
     </div>
   );
 };
